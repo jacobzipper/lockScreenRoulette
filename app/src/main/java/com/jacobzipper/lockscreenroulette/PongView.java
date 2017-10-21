@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.TextView;
 
 /**
@@ -29,7 +30,7 @@ public class PongView extends SurfaceView implements SurfaceHolder.Callback {
                 new Handler() {
                     @Override
                     public void handleMessage(Message m) {
-                        mStatusView.setVisibility(m.getData().getInt("vis"));
+                        mStatusView.setVisibility(View.VISIBLE);
                         mStatusView.setText(m.getData().getString("text"));
                     }
                 },
