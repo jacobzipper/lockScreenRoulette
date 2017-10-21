@@ -25,6 +25,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -59,8 +62,27 @@ public class Game extends View {
   private void score(){
     score++;
     scoreView.setText(Integer.toString(this.score));
-    if(score > 7) {
-      mActivity.finish();
+    if(score > 2) {
+      RelativeLayout screen = (RelativeLayout) mActivity.findViewById(R.id.theSnake);
+      Animation fadeAnim = AnimationUtils.loadAnimation(mActivity,R.anim.fadeout);
+      fadeAnim.setAnimationListener(new Animation.AnimationListener() {
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+          mActivity.finish();
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
+        }
+      });
+      screen.startAnimation(fadeAnim);
+
     }
   }
 

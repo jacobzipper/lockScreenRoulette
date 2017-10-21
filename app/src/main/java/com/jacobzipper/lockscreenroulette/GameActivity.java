@@ -62,12 +62,15 @@ public class GameActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD|
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|
                 WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-        BroadcastReceiver screenReceiver = new BroadcastReceiver() {
+        final BroadcastReceiver screenReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
-                    startActivity(new Intent(getApplicationContext(),MainActivity.classes.get((int)(Math.random()*MainActivity.classes.size()))).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    startActivity(new Intent(getApplicationContext(),MainActivity.classes.get(MainActivity.gameCursor)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    MainActivity.gameCursor++;
+                    MainActivity.gameCursor %= MainActivity.classes.size();
                     finish();
+                    unregisterReceiver(this);
                 }
             }
         };
@@ -95,6 +98,7 @@ public class GameActivity extends Activity {
                         @Override
                         public void run() {
                             startActivity(new Intent(getApplicationContext(),GameActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            unregisterReceiver(screenReceiver);
                             finish();
                         }
                     });
@@ -104,6 +108,7 @@ public class GameActivity extends Activity {
                     GameActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            unregisterReceiver(screenReceiver);
                             finish();
                         }
                     });

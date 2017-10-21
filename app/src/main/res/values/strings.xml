@@ -19,6 +19,14 @@
     <string name="viewMode">View Mode</string>
     <string name="speed">Speed</string>
     <string name="back">Back</string>
+    <string name="mode_ready">Touch to play</string>
+    <string name="mode_pause">Paused</string>
+    <string name="mode_win">Good work :-)</string>
+    <string name="mode_lose">Sorry :-(</string>
+    <string name="menu_new_game">New game</string>
+    <string name="menu_exit">Exit</string>
+    <string name="menu_resume">Resume</string>
+    <string name="default_score">0    0</string>
 
     <string-array name="optionsTheme">
     <item>Light</item>

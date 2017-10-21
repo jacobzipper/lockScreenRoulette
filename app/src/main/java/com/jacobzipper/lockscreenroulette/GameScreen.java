@@ -19,10 +19,8 @@ along with Snake.  If not, see <http://www.gnu.org/licenses/>.
 package com.jacobzipper.lockscreenroulette;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -54,7 +52,10 @@ public class GameScreen extends Activity {
       @Override
       public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
-          startActivity(new Intent(getApplicationContext(),MainActivity.classes.get((int)(Math.random()*MainActivity.classes.size()))).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+          startActivity(new Intent(getApplicationContext(),MainActivity.classes.get(MainActivity.gameCursor)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+          MainActivity.gameCursor++;
+          MainActivity.gameCursor %= MainActivity.classes.size();
+          unregisterReceiver(this);
           finish();
         }
       }
@@ -117,28 +118,8 @@ public class GameScreen extends Activity {
   // Called from Game Object
   public void gameOver(){
 
-    final CharSequence[] items = {"Play Again","Go Back"};
-    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    builder.setTitle(R.string.gameover);
-    builder.setItems(items, new DialogInterface.OnClickListener() {
-
-      public void onClick(DialogInterface dialog, int item) {
-        switch(item){
-          // Play Again
-          case 0:
-            game.setup();
-            game.invalidate();
-            break;
-
-          // Go Back
-          default:
-            mActivity.finish();
-        }
-      }
-    });
-
-    builder.setCancelable(false);
-    builder.create().show();
+    game.setup();
+    game.invalidate();
   }
 
   // On Game Pause, Stop Snake & Make Alert Dialog
@@ -150,34 +131,8 @@ public class GameScreen extends Activity {
 
     game.snake.stopped = true;
 
-    final CharSequence[] items = {"Continue","Start Over","Go Back"};
-    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    builder.setTitle(R.string.paused);
-    builder.setItems(items, new DialogInterface.OnClickListener() {
-
-      public void onClick(DialogInterface dialog, int item) {
-        switch(item){
-          // New Game (Start Over)
-          case 1:
-              game.setup();
-              game.invalidate();
-              break;
-
-          // End Game (Go Back)
-          case 2:
-            mActivity.finish();
-            break;
-
-          // Continue Game
-          default:
-            game.snake.stopped=false;
-            game.invalidate();
-        }
-      }
-    });
-
-    builder.setCancelable(false);
-    builder.create().show();
+    game.setup();
+    game.invalidate();
   }
 
   // Hardware Button Presses

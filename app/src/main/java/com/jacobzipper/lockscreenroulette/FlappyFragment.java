@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.timer.ITimerCallback;
@@ -43,6 +45,19 @@ public class FlappyFragment extends SimpleBaseGameActivity {
 	private ResourceManager mResourceManager;
 	private Scene mScene;
 	private Camera mCamera;
+
+	BroadcastReceiver screenReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
+				startActivity(new Intent(getApplicationContext(),MainActivity.classes.get(MainActivity.gameCursor)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+				MainActivity.gameCursor++;
+				MainActivity.gameCursor %= MainActivity.classes.size();
+				unregisterReceiver(this);
+				finish();
+			}
+		}
+	};
 
 	// sprites
 	private ParallaxBackground mBackground;
@@ -162,15 +177,6 @@ public class FlappyFragment extends SimpleBaseGameActivity {
 				WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD|
 				WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|
 				WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-		BroadcastReceiver screenReceiver = new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
-					startActivity(new Intent(getApplicationContext(),MainActivity.classes.get((int)(Math.random()*MainActivity.classes.size()))).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-					finish();
-				}
-			}
-		};
 		IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_ON);
 		registerReceiver(screenReceiver, intentFilter);
 		mBackground = new ParallaxBackground(82/255f, 190/255f, 206/255f){
@@ -274,7 +280,28 @@ public class FlappyFragment extends SimpleBaseGameActivity {
 		mScene.attachChild(mSceneManager.mYouSuckText);
 		mSceneManager.mBird.getSprite().stopAnimation();		
 		if(mScore > ScoreManager.GetBestScore(this)) {
-			finish();
+			unregisterReceiver(screenReceiver);
+			final Animation fadeAnim = AnimationUtils.loadAnimation(this,R.anim.fadeout);
+			fadeAnim.setAnimationListener(new Animation.AnimationListener() {
+				@Override
+				public void onAnimationStart(Animation animation) {
+
+				}
+
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					finish();
+				}
+
+				@Override
+				public void onAnimationRepeat(Animation animation) {
+
+				}
+			});
+			mRenderSurfaceView.startAnimation(fadeAnim);
+
+
+
 		}
 	}
 

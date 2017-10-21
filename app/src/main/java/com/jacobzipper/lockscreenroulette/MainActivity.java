@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends Activity {
     public static ArrayList<Class<?>> classes;
+    public static int gameCursor = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,14 +29,18 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         classes = new ArrayList<Class<?>>();
         //classes.add(FruitActivity.class);
-        classes.add(GameActivity.class);
+        //classes.add(GameActivity.class);
+        classes.add(Pong.class);
         classes.add(FlappyFragment.class);
         classes.add(GameScreen.class);
         BroadcastReceiver screenReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
-                    startActivity(new Intent(getApplicationContext(),classes.get((int)(Math.random()*classes.size()))).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    startActivity(new Intent(getApplicationContext(),classes.get(gameCursor)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    gameCursor++;
+                    MainActivity.gameCursor %= MainActivity.classes.size();
+                    unregisterReceiver(this);
                     finish();
                 }
             }
