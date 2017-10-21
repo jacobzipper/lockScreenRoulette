@@ -30,6 +30,7 @@ public class MainActivity extends Activity {
         //classes.add(FruitActivity.class);
         classes.add(GameActivity.class);
         classes.add(FlappyFragment.class);
+        classes.add(GameScreen.class);
         BroadcastReceiver screenReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
