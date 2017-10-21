@@ -97,7 +97,7 @@ public class Bird {
 
 		float newY = mSprite.getY() + mVerticalSpeed; // calculate the birds new height based on the current vertical speed
 		newY = Math.max(newY, 0); // don't allow through the ceiling
-		newY = Math.min(newY, FlappyActivity.FLOOR_BOUND); // don't allow through the floor
+		newY = Math.min(newY, FlappyFragment.FLOOR_BOUND); // don't allow through the floor
 		mSprite.setY(newY); //apply the new position
 
 		// now calculate the new speed

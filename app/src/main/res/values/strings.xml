@@ -2,4 +2,11 @@
     <string name="app_name">lockScreenRoulette</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="dark_mode_sum">Turn dark mode on and off</string>
+    <string name="strMainTetris">Tetris</string>
+    <string name="strBtnPlay">Jouer</string>
+    <string name="strBtnScore">Meilleur score</string>
+    <string name="strMenuGameAbort">Abandonner</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_menu">Menu</string>
 </resources>

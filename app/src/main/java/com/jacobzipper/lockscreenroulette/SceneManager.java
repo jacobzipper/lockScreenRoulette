@@ -20,6 +20,7 @@ public class SceneManager {
 	// text objects
 	Text mScoreText;
 	Text mGetReadyText;
+	Text mGetReadyTextTwo;
 	Sprite mInstructionsSprite;	
 	Text mCopyText;	
 	Text mYouSuckText;
@@ -45,8 +46,8 @@ public class SceneManager {
 
 
 		// bird		
-		float birdStartXOffset = (FlappyActivity.CAMERA_WIDTH / 4) - (Bird.BIRD_WIDTH / 4);
-		float birdYOffset = (FlappyActivity.CAMERA_HEIGHT / 2) - (Bird.BIRD_HEIGHT / 4);
+		float birdStartXOffset = (FlappyFragment.CAMERA_WIDTH / 4) - (Bird.BIRD_WIDTH / 4);
+		float birdYOffset = (FlappyFragment.CAMERA_HEIGHT / 2) - (Bird.BIRD_HEIGHT / 4);
 		mBird = new Bird(birdStartXOffset, birdYOffset, mContext.getVertexBufferObjectManager(), mScene);
 
 		//score
@@ -55,10 +56,15 @@ public class SceneManager {
 		mScene.attachChild(mScoreText);		
 
 		// get ready text
-		mGetReadyText = new Text(0, 220, mResourceManager.mGetReadyFont, "Get Ready!", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
+		mGetReadyText = new Text(0, 150, mResourceManager.mGetReadyFont, "Beat the best ", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
 		mGetReadyText.setZIndex(3);
 		mScene.attachChild(mGetReadyText);
 		centerText(mGetReadyText);
+		mGetReadyTextTwo = new Text(0, 220, mResourceManager.mGetReadyFont, "to unlock!", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
+		mGetReadyTextTwo.setZIndex(3);
+		mScene.attachChild(mGetReadyTextTwo);
+		centerText(mGetReadyTextTwo);
+
 
 		// instructions image
 		mInstructionsSprite = new Sprite(0, 0, 200, 172, mResourceManager.mInstructionsTexture, mContext.getVertexBufferObjectManager());
@@ -75,7 +81,7 @@ public class SceneManager {
 
 
 		// you suck text		
-		mYouSuckText = new Text(0, FlappyActivity.CAMERA_HEIGHT / 2 - 100, mResourceManager.mYouSuckFont, "You Suck!", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
+		mYouSuckText = new Text(0, FlappyFragment.CAMERA_HEIGHT / 2 - 100, mResourceManager.mYouSuckFont, "You Suck!", new TextOptions(HorizontalAlign.CENTER), mContext.getVertexBufferObjectManager());
 		mYouSuckText.setZIndex(3);		
 		centerText(mYouSuckText);
 
@@ -83,8 +89,8 @@ public class SceneManager {
 	}
 	
 	public static void centerSprite(Sprite sprite){
-		sprite.setX((FlappyActivity.CAMERA_WIDTH / 2) - (sprite.getWidth() / 2));
-		sprite.setY((FlappyActivity.CAMERA_HEIGHT / 2) - (sprite.getHeight() / 2));
+		sprite.setX((FlappyFragment.CAMERA_WIDTH / 2) - (sprite.getWidth() / 2));
+		sprite.setY((FlappyFragment.CAMERA_HEIGHT / 2) - (sprite.getHeight() / 2));
 	}
 	
 	public void displayCurrentScore(int score){		
@@ -98,6 +104,6 @@ public class SceneManager {
 	}
 
 	private void centerText(Text text){
-		text.setX((FlappyActivity.CAMERA_WIDTH / 2) - (text.getWidth() / 2));
+		text.setX((FlappyFragment.CAMERA_WIDTH / 2) - (text.getWidth() / 2));
 	}
 }

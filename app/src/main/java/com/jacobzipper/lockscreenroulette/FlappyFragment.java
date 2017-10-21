@@ -1,5 +1,11 @@
 package com.jacobzipper.lockscreenroulette;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.view.WindowManager;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -14,7 +20,7 @@ import org.andengine.ui.activity.SimpleBaseGameActivity;
 
 import java.util.ArrayList;
 
-public class FlappyActivity extends SimpleBaseGameActivity {
+public class FlappyFragment extends SimpleBaseGameActivity {
 
 	public static float CAMERA_WIDTH = 485; // this is not final because we dynamically set it at runtime based on the device aspect ratio
 	public static final float CAMERA_HEIGHT = 800;
@@ -46,7 +52,7 @@ public class FlappyActivity extends SimpleBaseGameActivity {
 	private int mScore = 0;
 	protected float mCurrentWorldPosition;
 	private float mBirdXOffset;
-	
+
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 
@@ -78,6 +84,7 @@ public class FlappyActivity extends SimpleBaseGameActivity {
 			}
 
 			private void ready(){
+
 				
 				mCurrentWorldPosition -= SCROLL_SPEED;	
 				mSceneManager.mBird.hover();		
@@ -150,8 +157,22 @@ public class FlappyActivity extends SimpleBaseGameActivity {
 	}
 
 	@Override
-	protected Scene onCreateScene() {				
-
+	protected Scene onCreateScene() {
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON|
+				WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD|
+				WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|
+				WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+		BroadcastReceiver screenReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
+					startActivity(new Intent(getApplicationContext(),MainActivity.classes.get((int)(Math.random()*MainActivity.classes.size()))).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+					finish();
+				}
+			}
+		};
+		IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+		registerReceiver(screenReceiver, intentFilter);
 		mBackground = new ParallaxBackground(82/255f, 190/255f, 206/255f){
 
 			float prevX = 0;
@@ -162,25 +183,26 @@ public class FlappyActivity extends SimpleBaseGameActivity {
 
 				switch(GAME_STATE){
 
-				case STATE_READY:
-				case STATE_PLAYING:
-					final float cameraCurrentX = mCurrentWorldPosition;//mCamera.getCenterX();
+					case STATE_READY:
+					case STATE_PLAYING:
+						final float cameraCurrentX = mCurrentWorldPosition;//mCamera.getCenterX();
 
-					if (prevX != cameraCurrentX) {
+						if (prevX != cameraCurrentX) {
 
-						parallaxValueOffset +=  cameraCurrentX - prevX;
-						this.setParallaxValue(parallaxValueOffset);
-						prevX = cameraCurrentX;
-					}
-					break;
-				}		
+							parallaxValueOffset +=  cameraCurrentX - prevX;
+							this.setParallaxValue(parallaxValueOffset);
+							prevX = cameraCurrentX;
+						}
+						break;
+				}
 
 				super.onUpdate(pSecondsElapsed);
 			}
 		};
 
 		mSceneManager = new SceneManager(this, mResourceManager, mBackground);
-		mScene = mSceneManager.createScene();	
+		mScene = mSceneManager.createScene();
+
 
 		mScene.setOnSceneTouchListener(new IOnSceneTouchListener() {
 
@@ -221,6 +243,7 @@ public class FlappyActivity extends SimpleBaseGameActivity {
 	private void updateScore(){
 
 		if(GAME_STATE == STATE_READY){
+			ScoreManager.SetBestScore(this,3);
 			mSceneManager.displayBestScore(ScoreManager.GetBestScore(this));
 		}else{
 			mSceneManager.displayCurrentScore(mScore);
@@ -236,6 +259,7 @@ public class FlappyActivity extends SimpleBaseGameActivity {
 		mResourceManager.mMusic.pause();
 		mResourceManager.mMusic.seekTo(0);
 		mScene.detachChild(mSceneManager.mGetReadyText);
+		mScene.detachChild(mSceneManager.mGetReadyTextTwo);
 		mScene.detachChild(mSceneManager.mInstructionsSprite);
 		mScene.detachChild(mSceneManager.mCopyText);
 		updateScore();
@@ -249,7 +273,9 @@ public class FlappyActivity extends SimpleBaseGameActivity {
 		mResourceManager.mDieSound.play();
 		mScene.attachChild(mSceneManager.mYouSuckText);
 		mSceneManager.mBird.getSprite().stopAnimation();		
-		ScoreManager.SetBestScore(this, mScore);	
+		if(mScore > ScoreManager.GetBestScore(this)) {
+			finish();
+		}
 	}
 
 	private void dead(){
@@ -286,10 +312,10 @@ public class FlappyActivity extends SimpleBaseGameActivity {
 		mScene.attachChild(mSceneManager.mCopyText);		
 	}
 
-	@Override
-	public final void onPause() {
-		super.onPause();
-		mResourceManager.mMusic.pause();		
-	}
+//	@Override
+//	public final void onPause() {
+//		super.onPause();
+//		mResourceManager.mMusic.pause();
+//	}
 
 }

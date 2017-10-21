@@ -14,7 +14,7 @@ import org.andengine.ui.activity.SimpleBaseGameActivity;
 public class PipePair {
 
 
-	float PIPE_WIDTH = FlappyActivity.CAMERA_WIDTH * 0.18f;
+	float PIPE_WIDTH = FlappyFragment.CAMERA_WIDTH * 0.18f;
 	float PIPE_HEIGHT = PIPE_WIDTH * 0.46f;
 
 	// upper pipe
@@ -61,7 +61,7 @@ public class PipePair {
 	private Sprite mLowerPipeSection;
 
 
-	private static final float PIPE_Y_OFFSET = FlappyActivity.CAMERA_WIDTH + 200; // make sure they always spawn way off screen
+	private static final float PIPE_Y_OFFSET = FlappyFragment.CAMERA_WIDTH + 200; // make sure they always spawn way off screen
 	
 	public PipePair(int mOpeningHeight,
 			VertexBufferObjectManager mVertexBufferObjectManager, Scene mScene) {

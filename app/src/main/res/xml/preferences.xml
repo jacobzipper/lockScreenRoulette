@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
-</PreferenceScreen>
+    <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+        <CheckBoxPreference
+            android:key="@string/dark_mode"
+            android:title="@string/dark_mode"
+            android:summary="@string/dark_mode_sum"
+            android:defaultValue="true" />
+    </PreferenceScreen></PreferenceScreen>
