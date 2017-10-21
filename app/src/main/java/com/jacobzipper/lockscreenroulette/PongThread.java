@@ -30,8 +30,8 @@ public class PongThread extends Thread {
     public static final int STATE_LOSE    = 3;
     public static final int STATE_WIN     = 4;
 
-    private static final int    PHYS_BALL_SPEED       = 20;
-    private static final int    PHYS_PADDLE_SPEED     = 8;
+    private static final int    PHYS_BALL_SPEED       = 35;
+    private static final int    PHYS_PADDLE_SPEED     = 30;
     private static final int    PHYS_FPS              = 60;
     private static final double PHYS_MAX_BOUNCE_ANGLE = 5 * Math.PI / 12; // 75 degrees in radians
     private static final int    PHYS_COLLISION_FRAMES = 5;
@@ -92,9 +92,9 @@ public class PongThread extends Thread {
 
         TypedArray a = context.obtainStyledAttributes(attributeSet, R.styleable.PongView);
 
-        int paddleHeight = a.getInt(R.styleable.PongView_paddleHeight, 85);
-        int paddleWidth = a.getInt(R.styleable.PongView_paddleWidth, 25);
-        int ballRadius = a.getInt(R.styleable.PongView_ballRadius, 15);
+        int paddleHeight = a.getInt(R.styleable.PongView_paddleHeight, 200);
+        int paddleWidth = a.getInt(R.styleable.PongView_paddleWidth, 75);
+        int ballRadius = a.getInt(R.styleable.PongView_ballRadius, 30);
 
         a.recycle();
 

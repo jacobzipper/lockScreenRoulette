@@ -48,6 +48,7 @@
 
             </intent-filter>
         </activity>
+        <service android:enabled="true" android:name=".TimerService" />
     </application>
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
