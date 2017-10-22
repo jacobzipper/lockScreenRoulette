@@ -22,6 +22,7 @@ import java.util.ArrayList;
 public class MainActivity extends Activity {
     public static ArrayList<Class<?>> classes;
     public static int gameCursor = 0;
+    public static long startTime;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,13 +31,14 @@ public class MainActivity extends Activity {
         classes = new ArrayList<Class<?>>();
         //classes.add(FruitActivity.class);
         //classes.add(GameActivity.class);
-        classes.add(Pong.class);
         classes.add(FlappyFragment.class);
         classes.add(GameScreen.class);
+        classes.add(Pong.class);
         BroadcastReceiver screenReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
+                    startTime = System.currentTimeMillis();
                     startActivity(new Intent(getApplicationContext(),classes.get(gameCursor)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     gameCursor++;
                     MainActivity.gameCursor %= MainActivity.classes.size();
@@ -55,7 +57,6 @@ public class MainActivity extends Activity {
             @Override
             public void onPermissionGranted() {
                 Toast.makeText(MainActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
-                //startService(new Intent(getApplicationContext(), LockScreen.class));
             }
 
             @Override
@@ -68,7 +69,7 @@ public class MainActivity extends Activity {
         TedPermission.with(this)
                 .setPermissionListener(permissionlistener)
                 .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                .setPermissions(Manifest.permission.DISABLE_KEYGUARD, Manifest.permission.SYSTEM_ALERT_WINDOW)
+                .setPermissions(Manifest.permission.INTERNET,Manifest.permission.DISABLE_KEYGUARD, Manifest.permission.SYSTEM_ALERT_WINDOW)
                 .check();
     }
 

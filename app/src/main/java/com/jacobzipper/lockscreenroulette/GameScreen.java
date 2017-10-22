@@ -36,7 +36,7 @@ public class GameScreen extends Activity {
   private Game game;
   private FrameLayout frameView;
   private TextView score;
-  private Activity mActivity;
+  public static Activity mActivity;
   SharedPreferences userPreferences, speedSetting;
   private boolean darkTheme=false,snakeOriented=false,classicMode=false;
   private int speed;

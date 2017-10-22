@@ -1,6 +1,7 @@
 package com.jacobzipper.lockscreenroulette;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -238,6 +239,7 @@ public class PongThread extends Thread {
                     setStatusText(res.getString(R.string.mode_win));
                     mHumanPlayer.score++;
                     if (mHumanPlayer.score >= 2) {
+                        Pong.mActivity.startActivity(new Intent(Pong.mActivity, WinActivity.class));
                         Pong.mActivity.finish();
                     }
                     setupNewRound();

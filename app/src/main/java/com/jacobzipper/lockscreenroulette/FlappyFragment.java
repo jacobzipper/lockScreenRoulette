@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.timer.ITimerCallback;
@@ -267,7 +265,7 @@ public class FlappyFragment extends SimpleBaseGameActivity {
 		mScene.detachChild(mSceneManager.mGetReadyText);
 		mScene.detachChild(mSceneManager.mGetReadyTextTwo);
 		mScene.detachChild(mSceneManager.mInstructionsSprite);
-		mScene.detachChild(mSceneManager.mCopyText);
+//		mScene.detachChild(mSceneManager.mCopyText);
 		updateScore();
 		mSceneManager.mBird.flap();
 	}
@@ -281,24 +279,8 @@ public class FlappyFragment extends SimpleBaseGameActivity {
 		mSceneManager.mBird.getSprite().stopAnimation();		
 		if(mScore > ScoreManager.GetBestScore(this)) {
 			unregisterReceiver(screenReceiver);
-			final Animation fadeAnim = AnimationUtils.loadAnimation(this,R.anim.fadeout);
-			fadeAnim.setAnimationListener(new Animation.AnimationListener() {
-				@Override
-				public void onAnimationStart(Animation animation) {
-
-				}
-
-				@Override
-				public void onAnimationEnd(Animation animation) {
-					finish();
-				}
-
-				@Override
-				public void onAnimationRepeat(Animation animation) {
-
-				}
-			});
-			mRenderSurfaceView.startAnimation(fadeAnim);
+			startActivity(new Intent(getApplicationContext(), WinActivity.class));
+			finish();
 
 
 
@@ -336,7 +318,7 @@ public class FlappyFragment extends SimpleBaseGameActivity {
 
 		mScene.attachChild(mSceneManager.mGetReadyText);
 		mScene.attachChild(mSceneManager.mInstructionsSprite);
-		mScene.attachChild(mSceneManager.mCopyText);		
+//		mScene.attachChild(mSceneManager.mCopyText);
 	}
 
 //	@Override
